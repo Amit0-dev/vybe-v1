@@ -1,10 +1,18 @@
-import prisma from "../lib/db";
+import prisma from "../lib/db.js";
 
 export function createMagicLink(token: string, expiryAt: Date) {
     return prisma.magicLink.create({
         data: {
             token,
             expiryAt,
+        },
+    });
+}
+
+export function deleteMagicLink(id: string) {
+    return prisma.magicLink.delete({
+        where: {
+            id,
         },
     });
 }

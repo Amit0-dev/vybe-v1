@@ -5,6 +5,6 @@ import { asyncHandler } from "../utils/async-handler";
 const userRoutes = express.Router();
 
 userRoutes.post("/", asyncHandler(generateMagicLink));
-userRoutes.post("/authenticate", asyncHandler(verifyLink));
+userRoutes.get("/authenticate", asyncHandler(verifyLink));
 
 export default userRoutes;

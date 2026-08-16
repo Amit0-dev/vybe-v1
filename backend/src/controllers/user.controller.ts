@@ -7,6 +7,7 @@ import bcrypt from "bcrypt";
 import {
     createMagicLink,
     createUser,
+    deleteMagicLink,
     findUserByEmail,
     getRecordByToken,
 } from "../repositories/user.repository";
@@ -42,13 +43,11 @@ export async function generateMagicLink(req: Request, res: Response) {
 
     const secretKey = env.JWT_MAGIC_LINK_SECRET;
 
-    const rawToken = getJwtToken({ email: input.email }, secretKey, 1000 * 60 * 10);
-
-    const hashedToken = await bcrypt.hash(rawToken, 10);
+    const token = getJwtToken({ email: input.email }, secretKey, 1000 * 60 * 10);
 
     const tokenExpiry = new Date(Date.now() + 1000 * 60 * 10); // 10 min
 
-    await createMagicLink(hashedToken, tokenExpiry);
+    await createMagicLink(token, tokenExpiry);
 
     await resend.emails.send({
         from: "Acme <onboarding@resend.dev>",
@@ -56,7 +55,7 @@ export async function generateMagicLink(req: Request, res: Response) {
         template: {
             id: "magic-link-sign-in",
             variables: {
-                MAGIC_LINK: `http://localhost:8080/api/user/authenticate?token=${rawToken}`,
+                MAGIC_LINK: `http://localhost:8080/api/user/authenticate?token=${token}`,
             },
         },
     });
@@ -70,9 +69,7 @@ export async function generateMagicLink(req: Request, res: Response) {
 export async function verifyLink(req: Request, res: Response) {
     const input = parseQueryParams(req.query);
 
-    const hashedToken = await bcrypt.hash(input.token, 10);
-
-    const record = await getRecordByToken(hashedToken);
+    const record = await getRecordByToken(input.token);
 
     if (!record) {
         throw new NotFoundError("Token record not found");
@@ -97,6 +94,9 @@ export async function verifyLink(req: Request, res: Response) {
     if (!existingUser) {
         existingUser = await createUser(decodedToken.email, true);
     }
+
+    // remove the magiclink from db
+    await deleteMagicLink(record.id);
 
     const token = getJwtToken({ id: existingUser.id }, secret, 1000 * 60 * 60 * 24 * 2);
 

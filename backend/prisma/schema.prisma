@@ -16,9 +16,9 @@ model User {
 }
 
 model MagicLink {
-  id        String   @id @default(cuid())
-  token     String
+  id        String    @id @default(cuid())
+  token     String    @unique
   expiryAt  DateTime
   usedAt    DateTime?
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
 }
