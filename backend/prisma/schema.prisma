@@ -19,6 +19,6 @@ model MagicLink {
   id        String   @id @default(cuid())
   token     String
   expiryAt  DateTime
-  usedAt    DateTime
+  usedAt    DateTime?
   createdAt DateTime @default(now())
 }
