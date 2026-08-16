@@ -12,6 +12,7 @@ import {
 } from "../repositories/user.repository";
 import { resend } from "../lib/resend";
 import { getJwtToken } from "../lib/getJwtToken";
+import { env } from "../lib/env";
 
 function parseMagicLinkBody(body: unknown) {
     const parsed = generateMagicLinkSchema.safeParse(body);
@@ -39,7 +40,7 @@ function parseQueryParams(query: unknown) {
 export async function generateMagicLink(req: Request, res: Response) {
     const input = parseMagicLinkBody(req.body);
 
-    const secretKey = process.env.JWT_MAGIC_LINK_SECRET!;
+    const secretKey = env.JWT_MAGIC_LINK_SECRET;
 
     const rawToken = getJwtToken({ email: input.email }, secretKey, 1000 * 60 * 10);
 
@@ -85,13 +86,13 @@ export async function verifyLink(req: Request, res: Response) {
         throw new AppError(400, "Either token is being used or expired");
     }
 
-    const secretKey = process.env.JWT_MAGIC_LINK_SECRET!;
+    const secretKey = env.JWT_MAGIC_LINK_SECRET;
 
     const decodedToken = jwt.verify(input.token, secretKey) as JwtPayload;
 
     let existingUser = await findUserByEmail(decodedToken.email);
 
-    const secret = process.env.JWT_SECRET!;
+    const secret = env.JWT_SECRET;
 
     if (!existingUser) {
         existingUser = await createUser(decodedToken.email, true);
@@ -101,5 +102,5 @@ export async function verifyLink(req: Request, res: Response) {
 
     res.cookie("jwt_secret", token);
 
-    return res.redirect(`${process.env.CLIENT_URL}/dashboard`);
+    return res.redirect(`${env.CLIENT_URL}/dashboard`);
 }
