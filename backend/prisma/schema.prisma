@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id              String   @id @default(cuid())
+  email           String   @unique
+  isEmailVerified Boolean
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model MagicLink {
+  id        String   @id @default(cuid())
+  token     String
+  expiryAt  DateTime
+  usedAt    DateTime
+  createdAt DateTime @default(now())
+}
