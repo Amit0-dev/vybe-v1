@@ -34,3 +34,9 @@ export function createUser(email: string, isVerified: boolean) {
         data: { email, isEmailVerified: isVerified },
     });
 }
+
+export function getUserById(id: string) {
+    return prisma.user.findUnique({
+        where: { id },
+    });
+}

@@ -3,7 +3,6 @@ import { generateMagicLinkSchema, queryParamsSchema } from "../validators/user.v
 import { AppError, NotFoundError, ValidationError } from "../utils/error";
 import { getZodFieldErrors } from "../utils/zod-error";
 import jwt, { type JwtPayload } from "jsonwebtoken";
-import bcrypt from "bcrypt";
 import {
     createMagicLink,
     createUser,
@@ -14,6 +13,7 @@ import {
 import { resend } from "../lib/resend";
 import { getJwtToken } from "../lib/getJwtToken";
 import { env } from "../lib/env";
+import type { User } from "../middleware/auth.middleware";
 
 function parseMagicLinkBody(body: unknown) {
     const parsed = generateMagicLinkSchema.safeParse(body);
@@ -103,4 +103,10 @@ export async function verifyLink(req: Request, res: Response) {
     res.cookie("jwt_secret", token);
 
     return res.redirect(`${env.CLIENT_URL}/dashboard`);
+}
+
+export async function getUserInfo(req: Request, res: Response) {
+    const user = req.user as User;
+
+    return res.status(200).json(user);
 }
