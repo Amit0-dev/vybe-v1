@@ -13,6 +13,7 @@ model User {
   isEmailVerified Boolean
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  spaces          Space[]
 }
 
 model MagicLink {
@@ -21,4 +22,16 @@ model MagicLink {
   expiryAt  DateTime
   usedAt    DateTime?
   createdAt DateTime  @default(now())
+}
+
+model Space {
+  id      String  @id @default(cuid())
+  name    String
+  desc    String?
+  code    String
+  ownerId String
+  owner   User    @relation(fields: [ownerId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
