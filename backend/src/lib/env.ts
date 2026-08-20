@@ -18,4 +18,5 @@ export const env = {
     JWT_MAGIC_LINK_SECRET: getEnv("JWT_MAGIC_LINK_SECRET"),
     JWT_SECRET: getEnv("JWT_SECRET"),
     MAIL_FROM: getEnv("MAIL_FROM"),
+    BACKEND_URL: getEnv("BACKEND_URL"),
 };

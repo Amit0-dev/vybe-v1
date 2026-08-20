@@ -55,7 +55,7 @@ export async function generateMagicLink(req: Request, res: Response) {
         template: {
             id: "magic-link-sign-in",
             variables: {
-                MAGIC_LINK: `http://localhost:8080/api/user/authenticate?token=${token}`,
+                MAGIC_LINK: `${env.BACKEND_URL}/api/user/authenticate?token=${token}`,
             },
         },
     });
