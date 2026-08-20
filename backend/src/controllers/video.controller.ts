@@ -4,10 +4,10 @@ import {
     paramsSchema,
     updateUpVoteSchema,
     YT_REGEX,
-} from "../validators/video.validators";
-import { AppError, ConflictError, UnauthorizedError, ValidationError } from "../utils/error";
-import { getZodFieldErrors } from "../utils/zod-error";
-import { parseSpaceId } from "./space.controller";
+} from "../validators/video.validators.js";
+import { AppError, ConflictError, UnauthorizedError, ValidationError } from "../utils/error.js";
+import { getZodFieldErrors } from "../utils/zod-error.js";
+import { parseSpaceId } from "./space.controller.js";
 import {
     getVideo,
     addVideo as aVideo,
@@ -15,7 +15,7 @@ import {
     decrementUpVote,
     removeVideo as rVideo,
     getAllVideosBySpaceId,
-} from "../repositories/video.repository";
+} from "../repositories/video.repository.js";
 
 function parseAddVideoBody(body: unknown) {
     const parsed = addVideoSchema.safeParse(body);

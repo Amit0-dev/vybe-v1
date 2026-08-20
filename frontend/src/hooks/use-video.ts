@@ -1,4 +1,4 @@
-import { addVideo, getVideos, removeVideo, updateUpVote, type Video } from "@/api/video/video.api";
+import { addVideo, getVideos, removeVideo, updateUpVote } from "@/api/video/video.api";
 import { queryClient } from "@/lib/query-client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";

@@ -1,7 +1,7 @@
 import express from "express";
-import { generateMagicLink, getUserInfo, verifyLink } from "../controllers/user.controller";
-import { asyncHandler } from "../utils/async-handler";
-import { requireAuth } from "../middleware/auth.middleware";
+import { generateMagicLink, getUserInfo, verifyLink } from "../controllers/user.controller.js";
+import { asyncHandler } from "../utils/async-handler.js";
+import { requireAuth } from "../middleware/auth.middleware.js";
 
 const userRoutes = express.Router();
 

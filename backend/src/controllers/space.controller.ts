@@ -3,16 +3,16 @@ import {
     createSpaceSchema,
     spaceIdParamSchema,
     updateSpaceSchema,
-} from "../validators/space.validators";
-import { UnauthorizedError, ValidationError } from "../utils/error";
-import { getZodFieldErrors } from "../utils/zod-error";
+} from "../validators/space.validators.js";
+import { UnauthorizedError, ValidationError } from "../utils/error.js";
+import { getZodFieldErrors } from "../utils/zod-error.js";
 import {
     createSpace as cSpace,
     deleteSpace as dSpace,
     getAllSpaces,
     updateSpace as uSpace,
     findSpaceById,
-} from "../repositories/space.repository";
+} from "../repositories/space.repository.js";
 
 export function parseSpaceId(params: Request["params"]) {
     const parsed = spaceIdParamSchema.safeParse(params);

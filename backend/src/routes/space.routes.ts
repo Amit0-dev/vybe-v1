@@ -1,13 +1,13 @@
 import express from "express";
-import { asyncHandler } from "../utils/async-handler";
-import { requireAuth } from "../middleware/auth.middleware";
+import { asyncHandler } from "../utils/async-handler.js";
+import { requireAuth } from "../middleware/auth.middleware.js";
 import {
     createSpace,
     deleteSpace,
     getSpaceById,
     getSpaces,
     updateSpace,
-} from "../controllers/space.controller";
+} from "../controllers/space.controller.js";
 
 const spaceRoutes = express.Router();
 

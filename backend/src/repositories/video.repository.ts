@@ -1,4 +1,4 @@
-import prisma from "../lib/db";
+import prisma from "../lib/db.js";
 
 export function getVideo({ videoId, spaceId }: { videoId: string; spaceId: string }) {
     console.log({spaceId, videoId})

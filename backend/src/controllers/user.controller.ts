@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
-import { generateMagicLinkSchema, queryParamsSchema } from "../validators/user.validators";
-import { AppError, NotFoundError, ValidationError } from "../utils/error";
-import { getZodFieldErrors } from "../utils/zod-error";
+import { generateMagicLinkSchema, queryParamsSchema } from "../validators/user.validators.js";
+import { AppError, NotFoundError, ValidationError } from "../utils/error.js";
+import { getZodFieldErrors } from "../utils/zod-error.js";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import {
     createMagicLink,
@@ -9,11 +9,11 @@ import {
     deleteMagicLink,
     findUserByEmail,
     getRecordByToken,
-} from "../repositories/user.repository";
-import { resend } from "../lib/resend";
-import { getJwtToken } from "../lib/getJwtToken";
-import { env } from "../lib/env";
-import type { User } from "../middleware/auth.middleware";
+} from "../repositories/user.repository.js";
+import { resend } from "../lib/resend.js";
+import { getJwtToken } from "../lib/getJwtToken.js";
+import { env } from "../lib/env.js";
+import type { User } from "../middleware/auth.middleware.js";
 
 function parseMagicLinkBody(body: unknown) {
     const parsed = generateMagicLinkSchema.safeParse(body);
@@ -50,7 +50,7 @@ export async function generateMagicLink(req: Request, res: Response) {
     await createMagicLink(token, tokenExpiry);
 
     await resend.emails.send({
-        from: "Acme <onboarding@resend.dev>",
+        from: env.MAIL_FROM,
         to: input.email,
         template: {
             id: "magic-link-sign-in",
