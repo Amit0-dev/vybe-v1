@@ -49,9 +49,10 @@ function parseSpaceAndVideoId(params: Request["params"]) {
 
 export async function addVideo(req: Request, res: Response) {
     const input = parseSpaceId(req.params);
+    console.log(req.body)
     const body = parseAddVideoBody(req.body);
 
-    const match = YT_REGEX.exec(body.videoUrl);
+    const match = YT_REGEX.exec(body.url);
     const videoId = match?.[1];
 
     if (!videoId) {
@@ -75,11 +76,11 @@ export async function addVideo(req: Request, res: Response) {
 export async function removeVideo(req: Request, res: Response) {
     const input = parseSpaceAndVideoId(req.params);
 
-    const spaceId = input.spaceId;
+    const spaceId = input.id;
     const videoId = input.videoId;
 
     const video = await getVideo({ spaceId, videoId });
-
+console.log(video)
     if (!video) {
         throw new AppError(400, "Invalid Id");
     }
@@ -98,16 +99,16 @@ export async function updateUpVote(req: Request, res: Response) {
     const input = parseSpaceAndVideoId(req.params);
     const body = parseUpdateBody(req.body);
 
-    const video = await getVideo({ spaceId: input.spaceId, videoId: input.videoId });
+    const video = await getVideo({ spaceId: input.id, videoId: input.videoId });
 
     if (!video) {
         throw new AppError(400, "Invalid Id");
     }
 
     if (body.up) {
-        await incrementUpVote(input.videoId, input.spaceId);
+        await incrementUpVote(input.videoId, input.id);
     } else if (body.down) {
-        await decrementUpVote(input.videoId, input.spaceId);
+        await decrementUpVote(input.videoId, input.id);
     }
 
     return res.status(200).json({ message: "success" });

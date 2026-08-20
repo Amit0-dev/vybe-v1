@@ -1,6 +1,7 @@
 import prisma from "../lib/db";
 
 export function getVideo({ videoId, spaceId }: { videoId: string; spaceId: string }) {
+    console.log({spaceId, videoId})
     return prisma.video.findUnique({
         where: {
             videoId_spaceId: {
@@ -14,6 +15,10 @@ export function getVideo({ videoId, spaceId }: { videoId: string; spaceId: strin
 export function getAllVideosBySpaceId(spaceId: string) {
     return prisma.video.findMany({
         where: { spaceId },
+        orderBy: { createdAt: "asc" },
+        include: {
+            owner: true,
+        }
     });
 }
 

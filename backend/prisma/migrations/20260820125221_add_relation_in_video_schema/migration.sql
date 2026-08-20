@@ -1,0 +1,5 @@
+-- AddForeignKey
+ALTER TABLE "Video" ADD CONSTRAINT "Video_addedBy_fkey" FOREIGN KEY ("addedBy") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Video" ADD CONSTRAINT "Video_spaceId_fkey" FOREIGN KEY ("spaceId") REFERENCES "Space"("id") ON DELETE CASCADE ON UPDATE CASCADE;

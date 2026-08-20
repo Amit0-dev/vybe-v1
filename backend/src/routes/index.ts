@@ -4,7 +4,7 @@ import spaceRoutes from "./space.routes";
 import videoRoutes from "./video.routes";
 
 export function registerRoutes(app: Express) {
-    spaceRoutes.use("/:spaceId/video", videoRoutes);
+    spaceRoutes.use("/:id/video", videoRoutes);
     app.use("/api/space", spaceRoutes);
     app.use("/api/user", userRoutes);
 }
