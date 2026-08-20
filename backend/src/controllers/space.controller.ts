@@ -14,7 +14,7 @@ import {
     findSpaceById,
 } from "../repositories/space.repository";
 
-function parseSpaceId(params: Request["params"]) {
+export function parseSpaceId(params: Request["params"]) {
     const parsed = spaceIdParamSchema.safeParse(params);
 
     if (!parsed.success) {
