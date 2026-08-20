@@ -79,7 +79,7 @@ export async function verifyLink(req: Request, res: Response) {
 
     const isTokenUsed = record.usedAt;
 
-    if (!isTokenValid && isTokenUsed) {
+    if (!isTokenValid || isTokenUsed) {
         throw new AppError(400, "Either token is being used or expired");
     }
 
@@ -100,7 +100,12 @@ export async function verifyLink(req: Request, res: Response) {
 
     const token = getJwtToken({ id: existingUser.id }, secret, 1000 * 60 * 60 * 24 * 2);
 
-    res.cookie("jwt_secret", token);
+    res.cookie("jwt_secret", token, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 2,
+        sameSite: "none",
+        secure: true,
+    });
 
     return res.redirect(`${env.CLIENT_URL}/dashboard`);
 }
